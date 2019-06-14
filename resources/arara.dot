@@ -1,0 +1,24 @@
+//initial_state 
+digraph name{
+	concentrate = true;
+	araraipsServer;
+	araraipsServer	->		androidJava		[dir="both"];
+	androidJava		->		androidScreen	[dir="both"];
+}
+
+//step1_separateAndroid
+digraph name{
+	concentrate = true;
+	araraipsServer;
+	araraipsServer	->		androidJava		[dir="both"];
+	androidJava		->		androidScreen	[dir="both"];
+}
+
+// step1_separateServerAndroid
+digraph name{
+	concentrate = true;
+	araraipsServer [shape="square"]
+	araraipsServer	->		androidJava
+	androidJava		->		araraipsServer	[dir="both"]
+	androidJava		->		androidScreen	[dir="both"];
+}

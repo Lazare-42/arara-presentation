@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    arara_dot:
+        build: ./
+        container_name: flaskarara
+        volumes:
+            - ${PWD}:/usr/home
+        ports:
+            - 5000:5000
+
