@@ -1,24 +1,53 @@
 //initial_state 
 digraph name{
 	concentrate = true;
-	araraipsServer;
-	araraipsServer	->		androidJava		[dir="both"];
-	androidJava		->		androidScreen	[dir="both"];
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer	->		android		[dir="both"];
 }
 
+/*CUT*/
 //step1_separateAndroid
 digraph name{
 	concentrate = true;
-	araraipsServer;
+	araraipsServer						[shape="square", label="		araraipsServer"]
 	araraipsServer	->		androidJava		[dir="both"];
 	androidJava		->		androidScreen	[dir="both"];
 }
 
-// step1_separateServerAndroid
+/*CUT*/
 digraph name{
+	subgraph {
+	constraint=false
+	araraipsServer
+	}
+	subgraph {
+	constraint=false
+	androidJava
+	}
+	subgraph {
+	constraint=false
+	androidWebView
+	}
+	subgraph {
+	constraint=false
+	androidScreen
+	}
 	concentrate = true;
-	araraipsServer [shape="square"]
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	androidWebView		->		araraipsServer	[dir="both"]
+	androidJava			->		androidWebView
+	androidWebView		->		androidScreen
+}
+
+/*CUT*/
+digraph name{
+	subgraph Servers{
+	rankdir=same;
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsLocationServer 				[shape="square", label="araraips\nLocationServer"]
+	}
+	concentrate = true;
 	araraipsServer	->		androidJava
 	androidJava		->		araraipsServer	[dir="both"]
-	androidJava		->		androidScreen	[dir="both"];
+	androidJava		->		androidScreen	[dir="both"]
 }
