@@ -1,7 +1,9 @@
+
+
 //initial_state 
 digraph name{ ratio="fill";
 	
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
 	araraipsServer	->		android		[dir="both"];
 }
 
@@ -12,17 +14,17 @@ digraph name{ ratio="fill";
 	
 	subgraph Servers{
 	node [style=filled]
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
 	}
 
 	subgraph Android{
 	node [style=filled]
 	rank=same
-	androidJava							[shape="ellipse", label="androidJava"]
-	androidScreen						[shape="ellipse", label="androidScreen"]
+	androidJava							[shape="ellipse", label="androidJava", color="orange"]
+	androidScreen						[shape="ellipse", label="androidScreen", color="orange"]
 	}
 
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
 	araraipsServer	->		androidJava		[dir="both"];
 	androidJava		->		androidScreen	[dir="both"];
 }
@@ -33,18 +35,106 @@ digraph name{ ratio="fill"
 
 	subgraph Servers{
 	node [style=filled]
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
 	}
 
 	subgraph Android{
 	node [style=filled]
 	rank=same
-	androidJava							[shape="ellipse", label="androidJava"]
-	androidScreen						[shape="ellipse", label="androidScreen"]
+	androidJava							[shape="ellipse", label="androidJava", color="orange"]
+	androidScreen						[shape="ellipse", label="androidScreen", color="orange"]
 	}
 
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
 	araraipsServer	->		androidJava		[dir="both"];
 	androidJava		->		androidScreen	[dir="both"];
 }
 
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
+	}
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView", color="orange"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava", color="orange"]
+	androidScreen						[shape="ellipse", label="androidScreen", color="orange"]
+	}
+
+	araraipsServer		->		androidWebView	[dir="both"]
+	androidWebView		->		androidJava		[dir="both"]
+	androidWebView		->		androidScreen	[dir="both"]
+}
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
+	}
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView", color="orange"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava", color="orange"]
+	androidScreen						[shape="ellipse", label="androidScreen", color="orange"]
+	}
+
+	androidWebView		->		araraipsServer
+	araraipsServer		->		androidWebView
+	androidWebView		->		androidJava		[dir="both"]
+	androidWebView		->		androidScreen	[dir="both"]
+}
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer", color="orange"]
+	araraipsLocationServer 				[shape="square", label="araraips\nLocationServer", color="orange"]
+	}
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView", color="orange"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava", color="orange"]
+	androidScreen						[shape="ellipse", label="androidScreen", color="orange"]
+	}
+
+	androidWebView		->		araraipsServer
+	araraipsServer		->		androidWebView
+	androidWebView		->		araraipsLocationServer	[dir="both", style="dotted"]
+	androidWebView		->		androidJava				[dir="both"]
+	androidWebView		->		androidScreen			[dir="both"]
+}
