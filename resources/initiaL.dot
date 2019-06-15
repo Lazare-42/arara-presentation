@@ -1,0 +1,50 @@
+//initial_state 
+digraph name{ ratio="fill";
+	
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer	->		android		[dir="both"];
+}
+
+/*CUT*/
+//step1_separateAndroid
+digraph name{ ratio="fill";
+
+	
+	subgraph Servers{
+	node [style=filled]
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer	->		androidJava		[dir="both"];
+	androidJava		->		androidScreen	[dir="both"];
+}
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer	->		androidJava		[dir="both"];
+	androidJava		->		androidScreen	[dir="both"];
+}
+

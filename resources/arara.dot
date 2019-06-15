@@ -1,53 +1,86 @@
-//initial_state 
-digraph name{
-	concentrate = true;
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		android		[dir="both"];
-}
+digraph name{ ratio="fill" 
+	compound=true
 
-/*CUT*/
-//step1_separateAndroid
-digraph name{
-	concentrate = true;
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		androidJava		[dir="both"];
-	androidJava		->		androidScreen	[dir="both"];
-}
-
-/*CUT*/
-digraph name{
-	subgraph {
-	constraint=false
-	araraipsServer
-	}
-	subgraph {
-	constraint=false
-	androidJava
-	}
-	subgraph {
-	constraint=false
-	androidWebView
-	}
-	subgraph {
-	constraint=false
-	androidScreen
-	}
-	concentrate = true;
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	androidWebView		->		araraipsServer	[dir="both"]
-	androidJava			->		androidWebView
-	androidWebView		->		androidScreen
-}
-
-/*CUT*/
-digraph name{
 	subgraph Servers{
-	rankdir=same;
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	araraipsServer		->		androidWebView	[dir="both"]
+	androidWebView		->		androidJava		[dir="both"]
+	androidWebView		->		androidScreen	[dir="both"]
+}
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	androidWebView		->		araraipsServer
+	araraipsServer		->		androidWebView
+	androidWebView		->		androidJava		[dir="both"]
+	androidWebView		->		androidScreen	[dir="both"]
+}
+
+/*CUT*/
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph Servers{
+	node [style=filled]
+	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	araraipsLocationServer 				[shape="square", label="araraips\nLocationServer"]
 	}
-	concentrate = true;
-	araraipsServer	->		androidJava
-	androidJava		->		araraipsServer	[dir="both"]
-	androidJava		->		androidScreen	[dir="both"]
+
+	subgraph Webview{
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph Android{
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	androidWebView		->		araraipsServer
+	araraipsServer		->		androidWebView
+	androidWebView		->		araraipsLocationServer	[dir="both", label"websocket"]
+	androidWebView		->		androidJava				[dir="both"]
+	androidWebView		->		androidScreen			[dir="both"]
 }
