@@ -1,10 +1,9 @@
-var dotIndex = 0;
-var svg			= d3.select("#svg_container")
-var graphviz 	= svg.graphviz()
-
-function actionFromClick(nodes, dotSrc, index) {
+function actionFromClick(nodes, dotSrc, index, svgNumber) {
 
 	var dotSrcLines = dotSrc[index].split('\n');
+	var svg			= d3.select("#graph" + svgNumber)
+
+	console.log("user clicked " + "#graph" + svgNumber)
 	var title 		= d3.select(nodes).selectAll('title').text().trim();
 	var text 		= d3.select(nodes).selectAll('text').text();
 	var id 			= d3.select(nodes).attr('id');
@@ -24,37 +23,59 @@ function actionFromClick(nodes, dotSrc, index) {
 	//dotSrc = dotSrcLines.join('\n');
 
 	if (index != dotSrc.length - 1) {
-	render(dotSrc, index + 1);
+	render(dotSrc, index + 1, svgNumber);
 	}
 	else {
-	render(dotSrc, 0);
+	render(dotSrc, 0, svgNumber);
 	}
 }
 
-function render(dotSrc, index) {
-
-	transition1 = d3.transition()
+function transition() {
+	d3.transition()
+		.ease(d3.easeLinear)
 		.delay(100)
 		.duration(1000);
+}
+
+function render(dotSrc, index, svgNumber) {
+
+	console.log("This is the svg_to_select : " + "#graph" + svgNumber)
+
+	var svg			= d3.select("#graph" + svgNumber)
+	var graphviz 	= svg.graphviz()
 
 	graphviz
-		.transition(transition1)
+		.engine("dot")
+		.transition(transition())
 		.renderDot(dotSrc[index])
 		.on("end", function () {
-			nodes = d3.selectAll('.node,.edge');
+			nodes = svg.selectAll('.node,.edge');
 			nodes
 				.on("click", function () {
-					actionFromClick(this, dotSrc, index);
+					actionFromClick(this, dotSrc, index, svgNumber);
 				}
 				)}
 		)
+}
+
+function selectSvgForDot(digraphArray, svgNumber) {
+
+	d3.select("#svg_container")
+		.append("graph")
+		.attr("id", "graph" + svgNumber)
+	render(digraphArray, 0, svgNumber)
 }
 
 function getDot() {
 	fetch("http://0.0.0.0:5000/resources/arara.dot").then(res => res.text()).then((allTheDot =>
 		{
 			var digraphArray = allTheDot.split("/*CUT*/")
-			render(digraphArray, 0)
+			selectSvgForDot(digraphArray, 1)
+		}))
+	fetch("http://0.0.0.0:5000/resources/initial.dot").then(res => res.text()).then((allTheDot =>
+		{
+			var digraphArray = allTheDot.split("/*CUT*/")
+			selectSvgForDot(digraphArray, 2)
 		}))
 }
 getDot()
