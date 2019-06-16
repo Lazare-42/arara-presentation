@@ -1,0 +1,11 @@
+if the id of the node on which you clicked is the same as of a graph, 
+then render that graph below.
+
+if the id of the node on which you clicked is the same as of a text [code],
+then render that text on the left.
+
+if the if of the node on which you clicked is the that of button next or button,
+render the next iteration of the graph.
+
+ELSE
+	delete the graph and all the ones below UNLESS the graph is the main graph

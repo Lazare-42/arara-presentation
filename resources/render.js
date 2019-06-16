@@ -5,6 +5,20 @@
  *	All graphs & their corresponding SVG 
  */
 dotGraphs = ["main", "androidWebView", "androidJava"]
+codeFiles = ["androidWebView", "androidJava"]
+
+/**
+ *	Load code corresponding to the clicked button
+ */
+function loadCode() {
+	fetch("http://0.0.0.0:5000/resources/" + "arrayExamples.java" + "?" + performance.now())
+		.then(res => res.text())
+		.then(res => {
+			var Element = document.getElementById('presentationCode');
+			Element.textContent = res;
+			hljs.highlightBlock(Element)
+		})
+}
 
 /**
  * Actions on Click
@@ -17,7 +31,10 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	var text 		= d3.select(clickedNode).selectAll('text').text();
 	var id 			= d3.select(clickedNode).attr('id');
 	var class1 		= d3.select(clickedNode).attr('class');
-	
+
+
+
+	loadCode()
 	dotElement = title.replace('->',' -> ');
 	//console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
 	//console.log('Finding and deleting references to %s from the DOT source', dotElement);
@@ -29,7 +46,20 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	 *	start a new svg avtivity with that graph
 	 */
 	if (dotGraphs.indexOf(title) > 0 && currentGraphName != title) {
-		getDot(title, svgNumber + 1)
+		/**
+		 *	Remove existing graphs after the current graph if they exist
+		 */
+		var nextSvg = svgNumber + 1
+		if (d3.select("#graph" + nextSvg).empty() == true) {
+			getDot(title, svgNumber + 1)
+		}
+		else {
+			while (d3.select("#graph" + nextSvg).empty() == false) {
+				d3.select("#graph" + nextSvg).remove()
+				nextSvg += 1
+			}
+			getDot(title, svgNumber + 1)
+		}
 	}
 	else {
 		if (index != 0 && title == "Previous") {

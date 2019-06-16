@@ -9,9 +9,7 @@ RUN pip install -r /user/home/requirements.txt
 ###build steps
 WORKDIR /usr/home
 
-
 ADD . /usr/home/
-RUN ls -l img
 
 ENV PYTHONPATH="$PYTHONPATH:/usr/home"
 ENV FLASK_APP="app.py"
