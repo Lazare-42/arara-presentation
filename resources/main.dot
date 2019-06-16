@@ -1,43 +1,41 @@
 
 //initial_state 
-digraph name{ ratio="fill";
+digraph name{ 
 	
+	subgraph cluster_Servers{
+	style="invis"
+
+	node [style=filled]
+	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		android		[dir="both"];
+	label="test"
+	}
+
+	subgraph cluster_Android{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	android								[shape="ellipse", label="androidJava"]
+	}
+
+	araraipsServer	->		android		[dir="both"]
 }
 
 /*CUT*/
 //step1_separateAndroid
-digraph name{ ratio="fill";
-
+digraph name{ 
 	
-	subgraph Servers{
+	subgraph cluster_Servers{
+	style="invis"
+
 	node [style=filled]
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	}
 
-	subgraph Android{
-	node [style=filled]
-	rank=same
-	androidJava							[shape="ellipse", label="androidJava"]
-	androidScreen						[shape="ellipse", label="androidScreen"]
-	}
+	subgraph cluster_Android{
+	style="invis"
 
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		androidJava		[dir="both"];
-	androidJava		->		androidScreen	[dir="both"];
-}
-
-/*CUT*/
-digraph name{ ratio="fill" 
-	compound=true
-
-	subgraph Servers{
-	node [style=filled]
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	}
-
-	subgraph Android{
 	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
@@ -45,28 +43,58 @@ digraph name{ ratio="fill"
 	}
 
 	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		androidJava		[dir="both"];
-	androidJava		->		androidScreen	[dir="both"];
+	araraipsServer	->		androidJava		[dir="both"]
+	androidJava		->		androidScreen	[dir="both"]
 }
 
+/*CUT*/
+//
+digraph name{ 
+
+	subgraph cluster_Servers{
+	style="invis"
+
+	node [style=filled]
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph cluster_Android{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	androidJava							[shape="ellipse", label="androidJava"]
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer	->		androidJava		[dir="both"]
+	androidJava		->		androidScreen	[dir="both"]
+}
 
 /*CUT*/
-digraph name{ ratio="fill" 
-	compound=true
+//
+digraph name{ 
 
-	subgraph Servers{
+	subgraph cluster_Servers{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	}
 
-	subgraph Webview{
+	subgraph cluster_Webview{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidWebView    					[shape="ellipse", label="androidWebView"]
 	}
 
-	subgraph Android{
+	subgraph cluster_Android{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
@@ -79,22 +107,28 @@ digraph name{ ratio="fill"
 }
 
 /*CUT*/
-digraph name{ ratio="fill" 
-	compound=true
+//
+digraph name{ 
 
-	subgraph Servers{
+	subgraph cluster_Servers{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	}
 
-	subgraph Webview{
+	subgraph cluster_Webview{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidWebView    					[shape="ellipse", label="androidWebView"]
 	}
 
-	subgraph Android{
+	subgraph cluster_Android{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
@@ -108,23 +142,29 @@ digraph name{ ratio="fill"
 }
 
 /*CUT*/
-digraph name{ ratio="fill" 
-	compound=true
+//
+digraph name{ 
 
-	subgraph Servers{
+	subgraph cluster_Servers{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	araraipsLocationServer 				[shape="square", label="araraips\nLocationServer"]
 	}
 
-	subgraph Webview{
+	subgraph cluster_Webview{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidWebView    					[shape="ellipse", label="androidWebView"]
 	}
 
-	subgraph Android{
+	subgraph cluster_Android{
+	style="invis"
+
 	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]

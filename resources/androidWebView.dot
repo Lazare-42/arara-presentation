@@ -1,0 +1,69 @@
+
+
+//initial_state 
+digraph name{
+
+	subgraph cluster_Webview{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph cluster_Buttons{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	buttonOne							[shape="circle", label="buttonOne"]
+	buttonTwo							[shape="circle", label="buttonTwo"]
+	buttonThree							[shape="circle", label="buttonThree"]
+	buttonFour							[shape="circle", label="buttonFour"]
+	buttonFive							[shape="circle", label="buttonFive"]
+	}
+
+	androidWebView		->		buttonOne				[dir="both"]
+	androidWebView		->		buttonTwo				[dir="both"]
+	androidWebView		->		buttonThree				[dir="both"]
+	androidWebView		->		buttonFour				[dir="both"]
+	androidWebView		->		buttonFive				[dir="both"]
+}
+	//androidWebView		->		araraipsLocationServer	[dir="both", style="dotted"]
+digraph name{ ratio="fill" 
+	compound=true
+
+	subgraph cluster_Servers{
+	style="invis"
+
+	node [style=filled]
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+	araraipsServer
+
+	subgraph cluster_Webview{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph cluster_Buttons{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	buttonOne							[shape="circle", label="buttonOne"]
+	buttonTwo							[shape="circle", label="buttonTwo"]
+	buttonThree							[shape="circle", label="buttonThree"]
+	buttonFour							[shape="circle", label="buttonFour"]
+	buttonFive							[shape="circle", label="buttonFive"]
+	}
+
+	androidWebView		->		buttonOne				[dir="both"]
+	androidWebView		->		buttonTwo				[dir="both"]
+	androidWebView		->		buttonThree				[dir="both"]
+	androidWebView		->		buttonFour				[dir="both"]
+	androidWebView		->		buttonFive				[dir="both"]
+}
