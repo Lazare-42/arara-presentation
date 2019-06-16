@@ -1,0 +1,23 @@
+
+//initial_state 
+digraph name{ 
+	
+	subgraph cluster_Servers{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	label="test"
+	}
+
+	subgraph cluster_Android{
+	style="invis"
+
+	node [style=filled]
+	rank=same
+	android								[shape="ellipse", label="androidJava"]
+	}
+
+	araraipsServer	->		android		[dir="both"]
+}

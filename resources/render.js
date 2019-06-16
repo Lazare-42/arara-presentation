@@ -4,7 +4,7 @@
  *
  *	All graphs & their corresponding SVG 
  */
-dotGraphs = ["main", "androidWebView"]
+dotGraphs = ["main", "androidWebView", "androidJava"]
 
 /**
  * Actions on Click
@@ -22,7 +22,7 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	//console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
 	//console.log('Finding and deleting references to %s from the DOT source', dotElement);
 
-
+	console.log("Clicked : " + title)
 	/**
 	 *	If the node title of the node on which we clicked on is a graph,
 	 *	the corresponding graph is not already open
@@ -38,16 +38,10 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 		if (index != dotSrc.length - 1 && title == "Next") {
 			addDigraphTitle(dotSrc, index + 1, svgNumber, graphviz, svg, currentGraphName)
 		}
-	} //	//for (i = 0; i < dotSrcLines.length;) {
-//	//	if (dotSrcLines[i].indexOf(dotElement) >= 0) {
-//	//		console.log('Deleting line %d: %s', i, dotSrcLines[i]);
-//	//		dotSrcLines.splice(i, 1);
-//	//	} else {
-//	//		i++;
-//	//	}
-//	//}
-//	//dotSrc = dotSrcLines.join('\n');
-//
+		if (title == "Delete") {
+			svg.remove()
+		}
+	}
 }
 
 /**
@@ -100,8 +94,22 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 		console.log("Your graphs should start with the keyword digraph")
 	}
 	else {
+		// randomize the query to never get the cached version of the file
 		fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
 			.then(res => res.text())
+			.then(res => {
+				var lines = res.split("\n")
+				/**
+				 *	If the svgNumber is zero ; then we remove the "Delete" button
+				 */
+				if (svgNumber == 0) {
+					for (j = 0; j < lines.length, lines[j].includes("Delete") == false; j++) {
+					}
+					lines.splice(j, 1)
+					}
+				res = lines.join("\n")
+				return res
+			})
 			.then(dotInfo => dotInfo += "\tlabel=\"" + "Graph\t\t" + currentGraphName + "\"\n\t}")
 			.then(dotInfo => {
 				found_first_subgraph = false
@@ -110,12 +118,9 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 						found_first_subgraph = true
 						for (n = i; dotSrcLines[n].includes("}") == false; n++) {
 							if (dotSrcLines[n].includes("shape")) {
-								//console.log(dotSrcLines[n])
 								var firstWord 	= dotSrcLines[n].split(" ")[1]
-								//console.log("Should be linking here to node in first subgraph : " + firstWord)
 								dotInfo 		+= "\nPrevious" + " -> " + firstWord  + "[style=invis]"
 								dotInfo 		+= "\nNext" + " -> " + firstWord + "[style=invis]"
-								//console.log(dotInfo)
 							}
 						}
 					}
@@ -123,14 +128,12 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 				return dotInfo
 			})
 			.then(dotInfo => {
-				console.log(dotInfo)
 				dotSrcLines.splice(i + 1, 0, dotInfo)
 				dotSrc[index] 	= dotSrcLines.join('\n')
 				render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
 			})
 	}
 }
-
 
 function selectSvgForDot(digraphArray, index, svgNumber, currentGraphName) {
 
@@ -144,6 +147,7 @@ function selectSvgForDot(digraphArray, index, svgNumber, currentGraphName) {
 }
 
 function getDot(graphName, svgNumber) {
+	// randomize the query to never get the cached version of the file
 	fetch("http://0.0.0.0:5000/resources/" + graphName + ".dot" + "?" + performance.now())
 		.then(res => res.text())
 		.then(res => res.replace(/\t+/g, ' ').trim())
