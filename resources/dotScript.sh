@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-if gcsplit -s ./arara.dot /digraph/ {*}
+if gcsplit -s $1 /digraph/ {*}
 then
 	for f in ./xx*
 	do

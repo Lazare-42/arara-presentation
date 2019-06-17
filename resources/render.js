@@ -13,10 +13,17 @@ codeFiles = ["androidWebView", "androidJava"]
 function loadCode() {
 	fetch("http://0.0.0.0:5000/resources/" + "arrayExamples.java" + "?" + performance.now())
 		.then(res => res.text())
+		.then(res => "<pre><code>\n" + res + "</pre></code>")
+		.then(res =>
+			{
+			var Element 		= document.getElementById('presentationCode');
+			Element.innerHTML 	= res
+			return res
+			})
 		.then(res => {
-			var Element = document.getElementById('presentationCode');
-			Element.textContent = res;
-			hljs.highlightBlock(Element)
+			var Element 		= document.getElementById('presentationCode');
+			hljs.initHighlighting.called = false;
+			hljs.initHighlighting();
 		})
 }
 
@@ -36,7 +43,7 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 
 	loadCode()
 	dotElement = title.replace('->',' -> ');
-	//console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
+	console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
 	//console.log('Finding and deleting references to %s from the DOT source', dotElement);
 
 	console.log("Clicked : " + title)
@@ -45,7 +52,7 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	 *	the corresponding graph is not already open
 	 *	start a new svg avtivity with that graph
 	 */
-	if (dotGraphs.indexOf(title) > 0 && currentGraphName != title) {
+	if (dotGraphs.indexOf(text) > 0 && currentGraphName != text) {
 		/**
 		 *	Remove existing graphs after the current graph if they exist
 		 */
@@ -118,50 +125,61 @@ function render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
 function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
 
 	dotSrcLines = dotSrc[index].split('\n')
-	for (i = 0; i < dotSrcLines.length, dotSrcLines[i].includes("digraph") == false; i++) {
+	/**
+	 *	Check if the menu has not already been added
+	 *	If it is the case, render as is.
+	 */
+	for (i = 0; i < dotSrcLines.length - 1 && dotSrcLines[i].includes("cluster_Title") == false; i++) {
 	}
-	if (dotSrcLines[i].includes("digraph") == false) {
-		console.log("Your graphs should start with the keyword digraph")
+	if (dotSrcLines[i].includes("cluster_Title") != false) {
+		render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
 	}
 	else {
-		// randomize the query to never get the cached version of the file
-		fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
-			.then(res => res.text())
-			.then(res => {
-				var lines = res.split("\n")
-				/**
-				 *	If the svgNumber is zero ; then we remove the "Delete" button
-				 */
-				if (svgNumber == 0) {
-					for (j = 0; j < lines.length, lines[j].includes("Delete") == false; j++) {
-					}
-					lines.splice(j, 1)
-					}
-				res = lines.join("\n")
-				return res
-			})
-			.then(dotInfo => dotInfo += "\tlabel=\"" + "Graph\t\t" + currentGraphName + "\"\n\t}")
-			.then(dotInfo => {
-				found_first_subgraph = false
-				for (i = 0; i < dotSrcLines.length && found_first_subgraph == false; i++) {
-					if (dotSrcLines[i].includes("subgraph")) {
-						found_first_subgraph = true
-						for (n = i; dotSrcLines[n].includes("}") == false; n++) {
-							if (dotSrcLines[n].includes("shape")) {
-								var firstWord 	= dotSrcLines[n].split(" ")[1]
-								dotInfo 		+= "\nPrevious" + " -> " + firstWord  + "[style=invis]"
-								dotInfo 		+= "\nNext" + " -> " + firstWord + "[style=invis]"
+		for (i = 0; i < dotSrcLines.length, dotSrcLines[i].includes("digraph") == false; i++) {
+		}
+		if (dotSrcLines[i].includes("digraph") == false) {
+			console.log("Your graphs should start with the keyword digraph")
+		}
+		else {
+			// randomize the query to never get the cached version of the file
+			fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
+				.then(res => res.text())
+				.then(res => {
+					var lines = res.split("\n")
+					/**
+					 *	If the svgNumber is zero ; then we remove the "Delete" button
+					 */
+					if (svgNumber == 0) {
+						for (j = 0; j < lines.length, lines[j].includes("Delete") == false; j++) {
+						}
+						lines.splice(j, 1)
+						}
+					res = lines.join("\n")
+					return res
+				})
+				.then(dotInfo => dotInfo += "\tlabel=\"" + currentGraphName + "\"\n\t}")
+				.then(dotInfo => {
+					found_first_subgraph = false
+					for (g = i; g < dotSrcLines.length && found_first_subgraph == false; g++) {
+						if (dotSrcLines[g].includes("subgraph")) {
+							found_first_subgraph = true
+							for (n = g; dotSrcLines[n].includes("}") == false; n++) {
+								if (dotSrcLines[n].includes("shape")) {
+									var firstWord 	= dotSrcLines[n].split(" ")[1]
+									dotInfo 		+= "\nPrevious" + " -> " + firstWord  + "[style=invis]"
+									dotInfo 		+= "\nNext" + " -> " + firstWord + "[style=invis]"
+								}
 							}
 						}
 					}
-				}
-				return dotInfo
-			})
-			.then(dotInfo => {
-				dotSrcLines.splice(i + 1, 0, dotInfo)
-				dotSrc[index] 	= dotSrcLines.join('\n')
-				render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
-			})
+					return dotInfo
+				})
+				.then(dotInfo => {
+					dotSrcLines.splice(i + 1, 0, dotInfo)
+					dotSrc[index] 	= dotSrcLines.join('\n')
+					render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
+				})
+		}
 	}
 }
 

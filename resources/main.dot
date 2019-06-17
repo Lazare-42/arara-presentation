@@ -4,19 +4,15 @@ digraph name{
 	
 	subgraph cluster_Servers{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	label="test"
 	}
 
-	subgraph cluster_Android{
+	subgraph cluster_AndroidJava{
 	style="invis"
-
-	node [style=filled]
 	rank=same
-	android								[shape="ellipse", label="androidJava"]
+	android								[shape="ellipse", label="android"]
 	}
 
 	araraipsServer	->		android		[dir="both"]
@@ -28,21 +24,21 @@ digraph name{
 	
 	subgraph cluster_Servers{
 	style="invis"
-
-	node [style=filled]
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	rank=same
+	araraipsServer							[shape="square", label="		araraipsServer"]
 	}
 
-	subgraph cluster_Android{
+	subgraph cluster_AndroidJava{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
+	}
+
+	subgraph cluster_AndroidScreen{
+	style="invis"
 	androidScreen						[shape="ellipse", label="androidScreen"]
 	}
 
-	araraipsServer						[shape="square", label="		araraipsServer"]
 	araraipsServer	->		androidJava		[dir="both"]
 	androidJava		->		androidScreen	[dir="both"]
 }
@@ -53,57 +49,30 @@ digraph name{
 
 	subgraph cluster_Servers{
 	style="invis"
-
-	node [style=filled]
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	}
-
-	subgraph cluster_Android{
-	style="invis"
-
-	node [style=filled]
-	rank=same
-	androidJava							[shape="ellipse", label="androidJava"]
-	androidScreen						[shape="ellipse", label="androidScreen"]
-	}
-
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	araraipsServer	->		androidJava		[dir="both"]
-	androidJava		->		androidScreen	[dir="both"]
-}
-
-/*CUT*/
-//
-digraph name{ 
-
-	subgraph cluster_Servers{
-	style="invis"
-
-	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	}
 
 	subgraph cluster_Webview{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	androidWebView    					[shape="ellipse", label="androidWebView"]
 	}
 
-	subgraph cluster_Android{
+	subgraph cluster_AndroidJava{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
+	}
+
+	subgraph cluster_AndroidScreen{
+	style="invis"
 	androidScreen						[shape="ellipse", label="androidScreen"]
 	}
 
 	araraipsServer		->		androidWebView	[dir="both"]
 	androidWebView		->		androidJava		[dir="both"]
-	androidWebView		->		androidScreen	[dir="both"]
+	androidJava			->		androidScreen	[dir="both"]
 }
 
 /*CUT*/
@@ -112,43 +81,6 @@ digraph name{
 
 	subgraph cluster_Servers{
 	style="invis"
-
-	node [style=filled]
-	rank=same
-	araraipsServer						[shape="square", label="		araraipsServer"]
-	}
-
-	subgraph cluster_Webview{
-	style="invis"
-
-	node [style=filled]
-	rank=same
-	androidWebView    					[shape="ellipse", label="androidWebView"]
-	}
-
-	subgraph cluster_Android{
-	style="invis"
-
-	node [style=filled]
-	rank=same
-	androidJava							[shape="ellipse", label="androidJava"]
-	androidScreen						[shape="ellipse", label="androidScreen"]
-	}
-
-	androidWebView		->		araraipsServer
-	araraipsServer		->		androidWebView
-	androidWebView		->		androidJava		[dir="both"]
-	androidWebView		->		androidScreen	[dir="both"]
-}
-
-/*CUT*/
-//
-digraph name{ 
-
-	subgraph cluster_Servers{
-	style="invis"
-
-	node [style=filled]
 	rank=same
 	araraipsServer						[shape="square", label="		araraipsServer"]
 	araraipsLocationServer 				[shape="square", label="araraips\nLocationServer"]
@@ -156,24 +88,24 @@ digraph name{
 
 	subgraph cluster_Webview{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	androidWebView    					[shape="ellipse", label="androidWebView"]
 	}
 
-	subgraph cluster_Android{
+	subgraph cluster_AndroidJava{
 	style="invis"
-
-	node [style=filled]
 	rank=same
 	androidJava							[shape="ellipse", label="androidJava"]
+	}
+
+	subgraph cluster_AndroidScreen{
+	style="invis"
 	androidScreen						[shape="ellipse", label="androidScreen"]
 	}
 
-	androidWebView		->		araraipsServer
-	araraipsServer		->		androidWebView
-	androidWebView		->		araraipsLocationServer	[dir="both", style="dotted"]
-	androidWebView		->		androidJava				[dir="both"]
-	androidWebView		->		androidScreen			[dir="both"]
+	araraipsLocationServer		->		androidWebView	[dir="both"]
+	araraipsServer				->		androidWebView	[dir="both"]
+	androidWebView				->		androidJava		[dir="both"]
+	androidJava					->		androidScreen	[dir="both"]
 }
+

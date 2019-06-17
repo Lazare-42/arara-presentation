@@ -1,0 +1,20 @@
+digraph name{ 
+
+	subgraph cluster_Servers{
+	style="invis"
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph cluster_Webview{
+	style="invis"
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	araraipsServer				->		androidWebView  [label="WebPage"]
+	androidWebView				->		androidJava		[dir="both"]
+}
+
+/*CUT*/
+//step1_separateAndroid
