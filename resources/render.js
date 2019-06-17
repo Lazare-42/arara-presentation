@@ -5,7 +5,9 @@
  *	All graphs & their corresponding SVG 
  */
 dotGraphs = ["main", "androidWebView", "androidJava"]
-codeFiles = ["androidWebView.java", "androidJava.java"]
+codeFiles = ["androidWebView.java", "clientApp.java", "araraLib.java", "araraIPS.java", "araraLocateMe.java"]
+
+var previouslyClickedElementId = null
 
 /**
  *	Load code corresponding to the clicked button
@@ -15,6 +17,7 @@ function loadCode(clickedLink) {
     var Element 		= document.getElementById('presentationCode');
     
     //console.log("clicked : " + clickedLink)
+    $("#presentationCode").hide()
     if (( index = codeFiles.findIndex(x => x.includes(clickedLink))) != -1) {
     	// randomize the query to never get the cached version of the file
     	//fetch("http://0.0.0.0:5000/resources/code/" + "arrayExamples.java" + "?" + performance.now())
@@ -27,7 +30,6 @@ function loadCode(clickedLink) {
     			return res
     			})
     		.then(res => {
-                $("#presentationCode").hide()
     			hljs.initHighlighting.called = false;
     			hljs.initHighlighting();
                 $("#presentationCode").fadeIn(1500)
@@ -46,26 +48,31 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	var text 		= d3.select(clickedNode).selectAll('text').text();
 	var id 			= d3.select(clickedNode).attr('id');
 	var class1 		= d3.select(clickedNode).attr('class');
+	var shape 		= d3.select(clickedNode).attr('shape');
 
+    /**
+     *  If a node or link was previously selected ; reset it to default
+     */
+    if (previouslyClickedElementId != null) {
+        svg.select('#' + previouslyClickedElementId + ' :not(title):not(text)')
+            .transition()
+            .duration(1500)
+            .attr("fill", "grey")
+    }
 
+    svg.select('#' + id + ' :not(title):not(text)')
+        .transition()
+        .duration(1500)
+        .attr("fill", "#ffb347")
 
-	dotElement = title.replace('->',' -> ');
-	console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
-	//console.log('Finding and deleting references to %s from the DOT source', dotElement);
+    previouslyClickedElementId = id
 
-	console.log("Clicked : " + title)
-	/**
-	 *	If the node title of the node on which we clicked on is a graph,
-	 *	the corresponding graph is not already open
-	 *	start a new svg avtivity with that graph
-	 */
     if (dotGraphs.indexOf(text) > 0 && currentGraphName != text) {
     	/**
     	 *	Remove existing graphs after the current graph if they exist
     	 */
     	var nextSvg = svgNumber + 1
     	if (d3.select("#graph" + nextSvg).empty() == true) {
-            console.log('lazare are you lying?')
     		return getDot(title, svgNumber + 1)
     	}
     	else {
@@ -77,6 +84,7 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
     	}
     }
     else {
+        loadCode(title)
     	if (index != 0 && title == "Previous") {
     		addDigraphTitle(dotSrc, index - 1, svgNumber, graphviz, svg, currentGraphName)
     	}
@@ -114,6 +122,7 @@ function render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
             .renderDot(dotTorender)
 
             .on("end", function () {
+                document.getElementById("graph" + svgNumber).scrollIntoView(true)
                 nodes = svg.selectAll('.node,.edge');
                 nodes
                     .on("click", function () {
@@ -122,10 +131,8 @@ function render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
                 resolve()
                 }
             )
-
     })
 	//svg.call(d3.zoom().on("zoom", null))
-	
 }
 
 /**
@@ -135,6 +142,7 @@ function render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
  */
 function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
 
+    //console.log(dotSrc.length)
 	dotSrcLines = dotSrc[index].split('\n')
 	/**
 	 *	Check if the menu has not already been added
@@ -165,10 +173,20 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 						}
 						lines.splice(j, 1)
 						}
+                    if (index + 1 == dotSrc.length) {
+						for (j = 0; j < lines.length, lines[j].includes("Next") == false; j++) {
+						}
+						lines.splice(j, 1)
+                    }
+                    if (index == 0) {
+						for (j = 0; j < lines.length, lines[j].includes("Previous") == false; j++) {
+						}
+						lines.splice(j, 1)
+                    }
 					res = lines.join("\n")
 					return res
 				})
-				.then(dotInfo => dotInfo += "\tlabel=\"" + currentGraphName + "\"\n\t}")
+				.then(dotInfo => dotInfo += "\tlabel=\"" + currentGraphName + " " + (index + 1) + "/" + dotSrc.length + "\"\n\t}")
 				.then(dotInfo => {
 					found_first_subgraph = false
 					for (g = i; g < dotSrcLines.length && found_first_subgraph == false; g++) {
@@ -177,8 +195,15 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 							for (n = g; dotSrcLines[n].includes("}") == false; n++) {
 								if (dotSrcLines[n].includes("shape")) {
 									var firstWord 	= dotSrcLines[n].split(" ")[1]
-									dotInfo 		+= "\nPrevious" + " -> " + firstWord  + "[style=invis]"
-									dotInfo 		+= "\nNext" + " -> " + firstWord + "[style=invis]"
+                                    if (index != 0) {
+                                        dotInfo 		+= "\nPrevious" + " -> " + firstWord  + "[style=invis]"
+                                    }
+                                    if (svgNumber != 0) {
+                                        dotInfo 		+= "\nDelete" + " -> " + firstWord  + "[style=invis]"
+                                    }
+                                    if (index + 1 != dotSrc.length) {
+                                        dotInfo 		+= "\nNext" + " -> " + firstWord + "[style=invis]"
+                                    }
 								}
 							}
 						}
