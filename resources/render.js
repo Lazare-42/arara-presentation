@@ -12,25 +12,27 @@ codeFiles = ["androidWebView.java", "androidJava.java"]
  */
 function loadCode(clickedLink) {
 
-	var Element 		= document.getElementById('presentationCode');
-
-	//console.log("clicked : " + clickedLink)
-	if (( index = codeFiles.findIndex(x => x.includes(clickedLink))) != -1) {
-		// randomize the query to never get the cached version of the file
-		//fetch("http://0.0.0.0:5000/resources/code/" + "arrayExamples.java" + "?" + performance.now())
-		fetch("http://0.0.0.0:5000/resources/code/" + codeFiles[index] + "?" + performance.now())
-			.then(res => res.text())
-			.then(res => "<pre><code>\n" + res + "</pre></code>")
-			.then(res =>
-				{
-				Element.innerHTML 	= res
-				return res
-				})
-			.then(res => {
-				hljs.initHighlighting.called = false;
-				hljs.initHighlighting();
-			})
-	}
+    var Element 		= document.getElementById('presentationCode');
+    
+    //console.log("clicked : " + clickedLink)
+    if (( index = codeFiles.findIndex(x => x.includes(clickedLink))) != -1) {
+    	// randomize the query to never get the cached version of the file
+    	//fetch("http://0.0.0.0:5000/resources/code/" + "arrayExamples.java" + "?" + performance.now())
+    	fetch("http://0.0.0.0:5000/resources/code/" + codeFiles[index] + "?" + performance.now())
+    		.then(res => res.text())
+    		.then(res => "<pre><code>\n" + res + "</pre></code>")
+    		.then(res =>
+    			{
+    			Element.innerHTML 	= res
+    			return res
+    			})
+    		.then(res => {
+                $("#presentationCode").hide()
+    			hljs.initHighlighting.called = false;
+    			hljs.initHighlighting();
+                $("#presentationCode").fadeIn(1500)
+    		})
+    }
 }
 
 /**
@@ -47,7 +49,6 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 
 
 
-	loadCode(title)
 	dotElement = title.replace('->',' -> ');
 	console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
 	//console.log('Finding and deleting references to %s from the DOT source', dotElement);
@@ -58,33 +59,34 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 	 *	the corresponding graph is not already open
 	 *	start a new svg avtivity with that graph
 	 */
-	if (dotGraphs.indexOf(text) > 0 && currentGraphName != text) {
-		/**
-		 *	Remove existing graphs after the current graph if they exist
-		 */
-		var nextSvg = svgNumber + 1
-		if (d3.select("#graph" + nextSvg).empty() == true) {
-			getDot(title, svgNumber + 1)
-		}
-		else {
-			while (d3.select("#graph" + nextSvg).empty() == false) {
-				d3.select("#graph" + nextSvg).remove()
-				nextSvg += 1
-			}
-			getDot(title, svgNumber + 1)
-		}
-	}
-	else {
-		if (index != 0 && title == "Previous") {
-			addDigraphTitle(dotSrc, index - 1, svgNumber, graphviz, svg, currentGraphName)
-		}
-		if (index != dotSrc.length - 1 && title == "Next") {
-			addDigraphTitle(dotSrc, index + 1, svgNumber, graphviz, svg, currentGraphName)
-		}
-		if (title == "Delete") {
-			svg.remove()
-		}
-	}
+    if (dotGraphs.indexOf(text) > 0 && currentGraphName != text) {
+    	/**
+    	 *	Remove existing graphs after the current graph if they exist
+    	 */
+    	var nextSvg = svgNumber + 1
+    	if (d3.select("#graph" + nextSvg).empty() == true) {
+            console.log('lazare are you lying?')
+    		return getDot(title, svgNumber + 1)
+    	}
+    	else {
+    		while (d3.select("#graph" + nextSvg).empty() == false) {
+    			d3.select("#graph" + nextSvg).remove()
+    			nextSvg += 1
+    		}
+    		return getDot(title, svgNumber + 1)
+    	}
+    }
+    else {
+    	if (index != 0 && title == "Previous") {
+    		addDigraphTitle(dotSrc, index - 1, svgNumber, graphviz, svg, currentGraphName)
+    	}
+    	if (index != dotSrc.length - 1 && title == "Next") {
+    		addDigraphTitle(dotSrc, index + 1, svgNumber, graphviz, svg, currentGraphName)
+    	}
+    	if (title == "Delete") {
+    		svg.remove()
+    	}
+    }
 }
 
 /**
@@ -103,24 +105,27 @@ function transition() {
  *	You can choose the graphviz engine to render the Dot
  */
 function render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName) {
+    return new Promise((resolve, reject) => {
+        var dotTorender = dotSrc[index]
 
+        graphviz
+            .engine("dot")
+            .transition(transition())
+            .renderDot(dotTorender)
+
+            .on("end", function () {
+                nodes = svg.selectAll('.node,.edge');
+                nodes
+                    .on("click", function () {
+                        actionFromClick(this, dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
+                    })
+                resolve()
+                }
+            )
+
+    })
 	//svg.call(d3.zoom().on("zoom", null))
 	
-	var dotTorender = dotSrc[index]
-
-	graphviz
-		.engine("dot")
-		.transition(transition())
-		.renderDot(dotTorender)
-
-		.on("end", function () {
-			nodes = svg.selectAll('.node,.edge');
-			nodes
-				.on("click", function () {
-					actionFromClick(this, dotSrc, index, svgNumber, graphviz, svg, currentGraphName);
-				}
-			)}
-		)
 }
 
 /**
@@ -138,7 +143,7 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 	for (i = 0; i < dotSrcLines.length - 1 && dotSrcLines[i].includes("cluster_Title") == false; i++) {
 	}
 	if (dotSrcLines[i].includes("cluster_Title") != false) {
-		render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
+		return render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
 	}
 	else {
 		for (i = 0; i < dotSrcLines.length, dotSrcLines[i].includes("digraph") == false; i++) {
@@ -148,7 +153,7 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 		}
 		else {
 			// randomize the query to never get the cached version of the file
-			fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
+			return fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
 				.then(res => res.text())
 				.then(res => {
 					var lines = res.split("\n")
@@ -183,7 +188,7 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 				.then(dotInfo => {
 					dotSrcLines.splice(i + 1, 0, dotInfo)
 					dotSrc[index] 	= dotSrcLines.join('\n')
-					render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
+					return render(dotSrc, index, svgNumber, graphviz, svg, currentGraphName)
 				})
 		}
 	}
@@ -197,20 +202,21 @@ function selectSvgForDot(digraphArray, index, svgNumber, currentGraphName) {
 
 	var svg			= d3.select("#graph" + svgNumber)
 	var graphviz 	= svg.graphviz()
-	addDigraphTitle(digraphArray, index, svgNumber, graphviz, svg, currentGraphName)
+	return addDigraphTitle(digraphArray, index, svgNumber, graphviz, svg, currentGraphName)
 }
 
 function getDot(graphName, svgNumber) {
 	// randomize the query to never get the cached version of the file
-	fetch("http://0.0.0.0:5000/resources/" + graphName + ".dot" + "?" + performance.now())
+	return fetch("http://0.0.0.0:5000/resources/" + graphName + ".dot" + "?" + performance.now())
 		.then(res => res.text())
 		.then(res => res.replace(/\t+/g, ' ').trim())
 		.then((dotInfo =>
 		{
 			var currentGraphName = graphName
 			var digraphArray = dotInfo.split("/*CUT*/")
-			selectSvgForDot(digraphArray, 0, svgNumber, currentGraphName)
+			return selectSvgForDot(digraphArray, 0, svgNumber, currentGraphName)
 		}))
+        .then(loadCode.bind(null, graphName))
 }
 
 getDot(dotGraphs[0], 0)
