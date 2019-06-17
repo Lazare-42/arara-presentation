@@ -5,26 +5,31 @@
  *	All graphs & their corresponding SVG 
  */
 dotGraphs = ["main", "androidWebView", "androidJava"]
-codeFiles = ["androidWebView", "androidJava"]
+codeFiles = ["androidWebView.java", "androidJava.java"]
 
 /**
  *	Load code corresponding to the clicked button
  */
-function loadCode() {
-	fetch("http://0.0.0.0:5000/resources/" + "arrayExamples.java" + "?" + performance.now())
-		.then(res => res.text())
-		.then(res => "<pre><code>\n" + res + "</pre></code>")
-		.then(res =>
-			{
-			var Element 		= document.getElementById('presentationCode');
-			Element.innerHTML 	= res
-			return res
+function loadCode(clickedLink) {
+
+	console.log("clicked : " + clickedLink)
+
+	if (( index = codeFiles.findIndex(x => x.includes(clickedLink))) != -1) {
+		fetch("http://0.0.0.0:5000/resources/code/" + codeFiles[index] + "?" + performance.now())
+			.then(res => res.text())
+			.then(res => "<pre><code>\n" + res + "</pre></code>")
+			.then(res =>
+				{
+				var Element 		= document.getElementById('presentationCode');
+				Element.innerHTML 	= res
+				return res
+				})
+			.then(res => {
+				var Element 		= document.getElementById('presentationCode');
+				hljs.initHighlighting.called = false;
+				hljs.initHighlighting();
 			})
-		.then(res => {
-			var Element 		= document.getElementById('presentationCode');
-			hljs.initHighlighting.called = false;
-			hljs.initHighlighting();
-		})
+	}
 }
 
 /**
@@ -41,7 +46,7 @@ function actionFromClick(clickedNode, dotSrc, index, svgNumber, graphviz, svg, c
 
 
 
-	loadCode()
+	loadCode(title)
 	dotElement = title.replace('->',' -> ');
 	console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s\nSVG number="%d""', id, class1, title, text, dotElement, svgNumber);
 	//console.log('Finding and deleting references to %s from the DOT source', dotElement);

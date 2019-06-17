@@ -18,20 +18,31 @@ html{
 		}
 
 		#presentationCode { 
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
 			grid-area: 1 / 1 / 5 / 4; 
 			overflow: scroll;
 		}
 
 		#svg_container {
 			grid-area: 1 / 4 / 5 / 7;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
 			overflow: scroll;
 			text-align:center;
 			z-index:10;
 		}
+		
+		#svg_container > * {
+		}
 
 		#logo {
 			grid-area: 5 / 1 / 6 / 2; 
-			max-width: 7%;
+			max-width: 5%;
 			position: absolute;
 			right:0;
 			bottom:0;
@@ -39,7 +50,7 @@ html{
 		}
 		#ananas {
 			grid-area: 5 / 6 / 6 / 7;
-			max-width: 7%;
+			max-width: 5%;
 			position: absolute;
 			left:0;
 			bottom:0;
@@ -59,7 +70,7 @@ html{
 		}
 
 		</style>
-			<link rel="stylesheet" href="http://0.0.0.0:5000/resources/highlight/styles/default.css">
+			<link rel="stylesheet" href="http://0.0.0.0:5000/resources/highlight/styles/androidstudio.css">
 	</head>
 
 	<body>
