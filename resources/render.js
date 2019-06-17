@@ -12,20 +12,21 @@ codeFiles = ["androidWebView.java", "androidJava.java"]
  */
 function loadCode(clickedLink) {
 
-	console.log("clicked : " + clickedLink)
+	var Element 		= document.getElementById('presentationCode');
 
+	//console.log("clicked : " + clickedLink)
 	if (( index = codeFiles.findIndex(x => x.includes(clickedLink))) != -1) {
+		// randomize the query to never get the cached version of the file
+		//fetch("http://0.0.0.0:5000/resources/code/" + "arrayExamples.java" + "?" + performance.now())
 		fetch("http://0.0.0.0:5000/resources/code/" + codeFiles[index] + "?" + performance.now())
 			.then(res => res.text())
 			.then(res => "<pre><code>\n" + res + "</pre></code>")
 			.then(res =>
 				{
-				var Element 		= document.getElementById('presentationCode');
 				Element.innerHTML 	= res
 				return res
 				})
 			.then(res => {
-				var Element 		= document.getElementById('presentationCode');
 				hljs.initHighlighting.called = false;
 				hljs.initHighlighting();
 			})
