@@ -18,6 +18,7 @@ ENV FLASK_APP="app.py"
 
 
 RUN rm -rf .git Dockerfile README.md
+RUN echo "this is resources : \n"
 
 ### run steps
 CMD python app.py
