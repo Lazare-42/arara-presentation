@@ -1,4 +1,5 @@
 from flask import Flask, render_template, send_from_directory
+from flask_cors import CORS
 
 app = Flask(__name__, template_folder='templates', static_url_path='')
 
@@ -7,6 +8,7 @@ def index():
     return render_template("index.html")
 
 @app.route('/resources/<path:filename>')
+@CORS(filename)
 def send_file(filename):
     return send_from_directory('resources', filename)
 
