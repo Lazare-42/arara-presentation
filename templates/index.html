@@ -66,39 +66,21 @@ html{
 	<body>
 		<object id="logo" data="/resources/AraraDS2.svg" 			type="image/svg+xml"></object>
 		<object id="ananas" data="/resources/ananas_picture.png" 	type="image/png"></object>
-		<div    id="presentationCode">							 class='column'</div>
-		<div    id="svg_container" style="text-align: center;"> class='column'</div>
+		<div id="presentationCode">							 class='column'</div>
+		<div id="svg_container" style="text-align: center;"> class='column'</div>
 
 		<script src="//d3js.org/d3.v4.min.js"></script>
 		<script src="https://unpkg.com/viz.js@1.8.0/viz.js" type="javascript/worker"></script>
 		<script src="https://unpkg.com/d3-graphviz@1.3.1/build/d3-graphviz.min.js"></script>
 
-        <div id="localResources">
-        </div>
+		<script src="/resources/render.js"></script>
+		<script src="/resources/parseDot.js"></script>
+		<script src="/resources/highlight/highlight.pack.js"></script>
+	    <script src="/resources/jquery-1.8.3.js"></script>
+	    <script src="/resources/highlight.pack.js"></script>
 
 
-
-		<script>
-        
-        javascriptFilesToload = 
-            [
-		    "http://0.0.0.0:5000/resources/render.js",
-		    "http://0.0.0.0:5000/resources/parseDot.js",
-		    "http://0.0.0.0:5000/resources/highlight/highlight.pack.js",
-	        "http://0.0.0.0:5000/resources/jquery-1.8.3.js",
-	        "http://0.0.0.0:5000/resources/highlight.pack.js"
-            ]
-
-        var Element 		= document.getElementById('localResources');
-        codeFiles.findIndex(x => fetch("http://0.0.0.0:5000/resources/" + x + "?" performance.now())
-    		                        .then(res => res.text())
-    		                        .then(res => "<script>\n" + res + "</script>")
-    		                        .then(res =>
-    		                        	{
-    		                        	Element.innerTEXT 	= res
-    		                        	return res
-    		                        	})
-        </script>
+		<script>;</script>
 
 	</body>
 </html>

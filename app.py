@@ -17,9 +17,12 @@ def index():
 @app.route('/resources/<path:filename>', methods=['GET'])
 def send_file(filename):
     print(request.headers, file=sys.stderr)
-    answer = send_from_directory('resources', filename)
-    answer.headers.set('Access-Control-Allow-Origin', '*')
-    return answer
+    if ".js" in request.headers:
+        print("Turning down this request", file=sys.stderr)
+    else:
+        answer = send_from_directory('resources', filename)
+        answer.headers.set('Access-Control-Allow-Origin', '*')
+        return answer
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
