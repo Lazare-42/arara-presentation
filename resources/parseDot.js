@@ -24,7 +24,7 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 		}
 		else {
 			// randomize the query to never get the cached version of the file
-			return fetch("http://0.0.0.0:5000/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
+			return fetch("/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
 				.then(res => res.text())
 				.then(res => {
 					var lines = res.split("\n")
