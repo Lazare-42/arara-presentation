@@ -24,9 +24,10 @@ function addDigraphTitle(dotSrc, index, svgNumber, graphviz, svg, currentGraphNa
 		}
 		else {
 			// randomize the query to never get the cached version of the file
-			return fetch("/resources/" + "digraphTitle" + ".dot" + "?" + performance.now())
-				.then(res => res.text())
-				.then(res => {
+			return fetch("/resources/" + "dot/" + "digraphTitle" + ".dot" + "?" + performance.now())
+                .then(res   => res.text())
+				.then(res   => {
+                    //console.log("Received " + res)
 					var lines = res.split("\n")
 					/**
 					 *	If the svgNumber is zero ; then we remove the "Delete" button

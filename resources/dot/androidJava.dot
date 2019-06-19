@@ -70,3 +70,44 @@ digraph name{
 	androidWebView		->		araraLocateMe	[dir="both"]
 	araraLocateMe		->		androidScreen	[dir="both"]
 }
+
+//
+/*CUT*/
+digraph name{ 
+
+	subgraph cluster_Servers{
+	style="invis"
+	rank=same
+	araraipsServer						[shape="square", label="		araraipsServer"]
+	}
+
+	subgraph cluster_Webview{
+	style="invis"
+	rank=same
+	androidWebView    					[shape="ellipse", label="androidWebView"]
+	}
+
+	subgraph cluster_AndroidJava{
+	style="dotted"
+	rank=same
+    constraint=false
+    label="AndroidJava"
+	clientApp							[shape="ellipse", label="clientApp"]
+	araraIPS							[shape="ellipse", label="araraIPS"]
+    androidManifest                     [shape="ellipse", label="androidManifest"]
+	araraLocateMe							[shape="ellipse", label="araraLocateMe"]
+	}
+
+	subgraph cluster_AndroidScreen{
+	style="invis"
+	androidScreen						[shape="ellipse", label="androidScreen"]
+	}
+
+	araraipsServer		->		androidWebView	    [dir="both"]
+    clientApp           ->      araraIPS            [constraint=false]
+    araraIPS            ->      androidManifest     [constraint=false]
+    androidManifest     ->      araraLocateMe       [constraint=false]   
+	androidWebView		->		araraLocateMe	    [dir="both"]
+	araraLocateMe		->		androidScreen	    [dir="both"]
+}
+//
