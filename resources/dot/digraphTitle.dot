@@ -6,6 +6,6 @@
 	style="dotted"
 	node [style=filled]
 	rank=same
-	Next 		[shape="triangle", orientation="30", label=">>", color=cyan]
+	Next 		[shape="triangle", orientation="30", label=">>", color="#8f00ff"]
 	Delete 		[shape="octogon", label="[]", color="#8b0000"]
-	Previous 	[shape="triangle", orientation="90", label="<<", color=cyan]
+	Previous 	[shape="triangle", orientation="90", label="<<", color="#8f00ff"]

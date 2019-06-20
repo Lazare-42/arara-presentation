@@ -9,15 +9,15 @@ RUN pip install -r /user/home/requirements.txt
 ###build steps
 WORKDIR /usr/home
 
-	EXPOSE 8080 5000
+EXPOSE 8080 5001
 
-	ADD . /usr/home/
+ADD . /usr/home/
 
-	ENV PYTHONPATH="$PYTHONPATH:/usr/home"
-	ENV FLASK_APP="app.py"
+ENV PYTHONPATH="$PYTHONPATH:/usr/home"
+ENV FLASK_APP="app.py"
 
 
-	RUN rm -rf .git Dockerfile README.md
+RUN rm -rf .git Dockerfile README.md
 
-	### run steps
-	CMD python app.py
+### run steps
+CMD python app.py

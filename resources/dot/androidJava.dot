@@ -1,52 +1,54 @@
 
 //
 digraph name{ 
+graph [bgcolor="#282b2e"]
 
 	subgraph cluster_Servers{
 	style="invis"
 	rank=same
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", color="#ffc3a0", style=filled, label="		araraipsServer"]
 	}
 
 	subgraph cluster_Webview{
 	style="invis"
 	rank=same
-	androidWebView    					[shape="ellipse", label="androidWebView"]
+	androidWebView    					[shape="ellipse", color="#ffc3a0", style=filled, label="androidWebView"]
 	}
 
 	subgraph cluster_AndroidJava{
 	style="dotted"
 	rank=same
     label="AndroidJava"
-	clientApp							[shape="ellipse", label="clientApp"]
-	araraLib							[shape="ellipse", label="araraLib"]
+	clientApp							[shape="ellipse", color="#ffc3a0", style=filled, label="clientApp"]
+	araraLib							[shape="ellipse", color="#ffc3a0", style=filled, label="araraLib"]
 	}
 
 	subgraph cluster_AndroidScreen{
 	style="invis"
-	androidScreen						[shape="ellipse", label="androidScreen"]
+	androidScreen						[shape="ellipse", color="#ffc3a0", style=filled, label="androidScreen"]
 	}
 
-	araraipsServer		->		androidWebView	[dir="both"]
+	araraipsServer		->		androidWebView	[dir="both", color="#ffc3a0"]
     clientApp           ->      araraLib        [constraint=false]
-	androidWebView		->		araraLib		[dir="both"]
-	araraLib			->		androidScreen	[dir="both"]
+	androidWebView		->		araraLib		[dir="both", color="#ffc3a0"]
+	araraLib			->		androidScreen	[dir="both", color="#ffc3a0"]
 }
 
 /*CUT*/
 //
 digraph name{ 
+graph [bgcolor="#282b2e"]
 
 	subgraph cluster_Servers{
 	style="invis"
 	rank=same
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", color="#ffc3a0", style=filled, label="		araraipsServer"]
 	}
 
 	subgraph cluster_Webview{
 	style="invis"
 	rank=same
-	androidWebView    					[shape="ellipse", label="androidWebView"]
+	androidWebView    					[shape="ellipse", color="#ffc3a0", style=filled, label="androidWebView"]
 	}
 
 	subgraph cluster_AndroidJava{
@@ -54,37 +56,38 @@ digraph name{
 	rank=same
     constraint=false
     label="AndroidJava"
-	clientApp							[shape="ellipse", label="clientApp"]
-	araraIPS							[shape="ellipse", label="araraIPS"]
-	araraLocateMe							[shape="ellipse", label="araraLocateMe"]
+	clientApp							[shape="ellipse", color="#ffc3a0", style=filled, label="clientApp"]
+	araraIPS							[shape="ellipse", color="#ffc3a0", style=filled, label="araraIPS"]
+	araraLocateMe							[shape="ellipse", color="#ffc3a0", style=filled, label="araraLocateMe"]
 	}
 
 	subgraph cluster_AndroidScreen{
 	style="invis"
-	androidScreen						[shape="ellipse", label="androidScreen"]
+	androidScreen						[shape="ellipse", color="#ffc3a0", style=filled, label="androidScreen"]
 	}
 
-	araraipsServer		->		androidWebView	[dir="both"]
+	araraipsServer		->		androidWebView	[dir="both", color="#ffc3a0"]
     clientApp           ->      araraIPS        [constraint=false]
     araraIPS            ->      araraLocateMe   [constraint=false]
-	androidWebView		->		araraLocateMe	[dir="both"]
-	araraLocateMe		->		androidScreen	[dir="both"]
+	androidWebView		->		araraLocateMe	[dir="both", color="#ffc3a0"]
+	araraLocateMe		->		androidScreen	[dir="both", color="#ffc3a0"]
 }
 
 //
 /*CUT*/
 digraph name{ 
+graph [bgcolor="#282b2e"]
 
 	subgraph cluster_Servers{
 	style="invis"
 	rank=same
-	araraipsServer						[shape="square", label="		araraipsServer"]
+	araraipsServer						[shape="square", color="#ffc3a0", style=filled, label="		araraipsServer"]
 	}
 
 	subgraph cluster_Webview{
 	style="invis"
 	rank=same
-	androidWebView    					[shape="ellipse", label="androidWebView"]
+	androidWebView    					[shape="ellipse", color="#ffc3a0", style=filled, label="androidWebView"]
 	}
 
 	subgraph cluster_AndroidJava{
@@ -92,22 +95,22 @@ digraph name{
 	rank=same
     constraint=false
     label="AndroidJava"
-	clientApp							[shape="ellipse", label="clientApp"]
-	araraIPS							[shape="ellipse", label="araraIPS"]
-    androidManifest                     [shape="ellipse", label="androidManifest"]
-	araraLocateMe							[shape="ellipse", label="araraLocateMe"]
+	clientApp							[shape="ellipse", color="#ffc3a0", style=filled, label="clientApp"]
+	araraIPS							[shape="ellipse", color="#ffc3a0", style=filled, label="araraIPS"]
+    androidManifest                     [shape="ellipse", color="#ffc3a0", style=filled, label="androidManifest"]
+	araraLocateMe							[shape="ellipse", color="#ffc3a0", style=filled, label="araraLocateMe"]
 	}
 
 	subgraph cluster_AndroidScreen{
 	style="invis"
-	androidScreen						[shape="ellipse", label="androidScreen"]
+	androidScreen						[shape="ellipse", color="#ffc3a0", style=filled, label="androidScreen"]
 	}
 
-	araraipsServer		->		androidWebView	    [dir="both"]
+	araraipsServer		->		androidWebView	    [dir="both", color="#ffc3a0"]
     clientApp           ->      araraIPS            [constraint=false]
     araraIPS            ->      androidManifest     [constraint=false]
     androidManifest     ->      araraLocateMe       [constraint=false]   
-	androidWebView		->		araraLocateMe	    [dir="both"]
-	araraLocateMe		->		androidScreen	    [dir="both"]
+	androidWebView		->		araraLocateMe	    [dir="both", color="#ffc3a0"]
+	araraLocateMe		->		androidScreen	    [dir="both", color="#ffc3a0"]
 }
 //

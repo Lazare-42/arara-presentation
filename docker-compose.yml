@@ -9,3 +9,11 @@ services:
         ports:
             - 5000:5000
 
+    magjac:
+        build: ./magjac-editor/
+        container_name: flask_magjac
+        volumes:
+            - ${PWD}:/usr/home
+        ports:
+            - 5001:5001
+
